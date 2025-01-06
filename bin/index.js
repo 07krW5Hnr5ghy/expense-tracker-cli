@@ -67,6 +67,17 @@ const summaryExpenses = () => {
     console.log(`# Total expenses: $${Math.round((summaryExpenses+Number.EPSILON)*100)/100}`);
 }
 
+const deleteExpense = (id) => {
+    const expenses = readExpenses();
+    const updatedExpenses = expenses.filter((expense)=> expense.id!==parseInt(id,10));
+    if(expenses.length===updatedExpenses.length){
+        console.log(`Expenses with ID ${id} not found.`);
+        return;
+    }
+    writeExpenses(updatedExpenses);
+    console.log(`Expense with ID ${id} deleted successfully.`);
+}
+
 // CLI handler
 const main = () => {
 
@@ -74,7 +85,7 @@ const main = () => {
     .description('add new expense with description and ammount')
     .requiredOption('--description <string>', 'description of the new expense')
     .requiredOption('--amount <price>', 'amount of the new expense')
-    .action((options, state,command) => {
+    .action((options) => {
         addExpense(options.description,options.amount);
     });
 
@@ -89,6 +100,13 @@ const main = () => {
     .action(()=>{
         summaryExpenses();
     });
+
+    program.command('delete')
+    .description('delete one of the expenses')
+    .requiredOption('--id <number>','id of the expense to delete')
+    .action((options)=>{
+        deleteExpense(options.id);
+    })
 
     program.parse();
     
