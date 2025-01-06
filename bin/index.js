@@ -18,6 +18,9 @@ const readExpenses = () => {
 const writeExpenses = (expenses) => {
     fs.writeFileSync(JSON_FILE,JSON.stringify(expenses,null,2),'utf-8');
 }
+const formatStringNumber = (number) => {
+    return number < 10 ? String("0"+number) : number;
+}
 
 // expenses functions
 const addExpense = (description,amount) => {
@@ -38,11 +41,22 @@ const addExpense = (description,amount) => {
         id,
         description,
         amount:Number(amount),
-        date:`${currentDate.getFullYear()}-${currentDate.getMonth()+1}-${currentDate.getDay()+1}`,
+        date:`${currentDate.getFullYear()}-${formatStringNumber(currentDate.getMonth()+1)}-${formatStringNumber(currentDate.getDate())}`,
     }
     expenses.push(newExpense);
     writeExpenses(expenses);
     console.log(`Expense added successfully (ID:${id})`);
+}
+
+// list expenses
+const listExpenses = () => {
+    const expenses = readExpenses();
+    console.log('#-ID-Date-------Description-------Amount');
+    expenses.forEach(expense => {
+        console.log(
+            `# ${formatStringNumber(expense.id)} ${expense.date} "${expense.description}" ${expense.amount}`
+        );
+    });
 }
 
 // CLI handler
@@ -54,6 +68,12 @@ const main = () => {
     .requiredOption('--amount <price>', 'amount of the new expense')
     .action((options, state,command) => {
         addExpense(options.description,options.amount);
+    });
+
+    program.command('list')
+    .description('list the recorded expenses in the cmd')
+    .action(()=>{
+        listExpenses();
     });
 
     program.parse();
