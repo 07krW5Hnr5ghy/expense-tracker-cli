@@ -1,6 +1,14 @@
-{
-  "id": 1,
-  "description": "food",
-  "amount": 2.34,
-  "date": "2025-1-1"
-}
+[
+  {
+    "id": 1,
+    "description": "food",
+    "amount": 2.34,
+    "date": "2025-1-1"
+  },
+  {
+    "id": 2,
+    "description": "food2",
+    "amount": 10.09,
+    "date": "2025-1-1"
+  }
+]

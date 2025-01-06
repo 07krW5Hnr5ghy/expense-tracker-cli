@@ -41,7 +41,7 @@ const addExpense = (description,amount) => {
         date:`${currentDate.getFullYear()}-${currentDate.getMonth()+1}-${currentDate.getDay()+1}`,
     }
     expenses.push(newExpense);
-    writeExpenses(newExpense);
+    writeExpenses(expenses);
     console.log(`Expense added successfully (ID:${id})`);
 }
 
