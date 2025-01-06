@@ -48,7 +48,6 @@ const addExpense = (description,amount) => {
     console.log(`Expense added successfully (ID:${id})`);
 }
 
-// list expenses
 const listExpenses = () => {
     const expenses = readExpenses();
     console.log('#-ID-Date-------Description-------Amount');
@@ -57,6 +56,15 @@ const listExpenses = () => {
             `# ${formatStringNumber(expense.id)} ${expense.date} "${expense.description}" ${expense.amount}`
         );
     });
+}
+
+const summaryExpenses = () => {
+    const expenses =  readExpenses();
+    const summaryExpenses = expenses.reduce(
+        (accumulator,currentValue) => accumulator+currentValue.amount,
+        0
+    );
+    console.log(`# Total expenses: $${Math.round((summaryExpenses+Number.EPSILON)*100)/100}`);
 }
 
 // CLI handler
@@ -74,6 +82,12 @@ const main = () => {
     .description('list the recorded expenses in the cmd')
     .action(()=>{
         listExpenses();
+    });
+
+    program.command('summary')
+    .description('list the summary of the expenses')
+    .action(()=>{
+        summaryExpenses();
     });
 
     program.parse();
