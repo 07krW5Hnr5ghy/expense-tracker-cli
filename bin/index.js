@@ -24,14 +24,8 @@ const formatStringNumber = (number) => {
 
 // expenses functions
 const addExpense = (description,amount) => {
-    if(description === undefined && amount === undefined){
-        console.log('neither description nor amount was provided, use add help to get more info');
-        return;
-    }else if(description === undefined){
-        console.log('description was not provided, use add help to get more info');
-        return;
-    }else if(amount === undefined){
-        console.log('amount was not provided, use add help to get more info');
+    if(typeof(Number(amount))!=="number"){
+        console.log(`Expense amount must be a number`);
         return;
     }
     const expenses = readExpenses();
