@@ -56,14 +56,24 @@ const listExpenses = () => {
             `# ${formatStringNumber(expense.id)} ${expense.date} "${expense.description}" ${expense.amount}`
         );
     });
+    
 }
 
-const summaryExpenses = () => {
+const summaryExpenses = (month) => {
     const expenses =  readExpenses();
-    const summaryExpenses = expenses.reduce(
-        (accumulator,currentValue) => accumulator+currentValue.amount,
-        0
-    );
+    let summaryExpenses = null;
+    if(month!==undefined){
+        summaryExpenses = expenses.reduce((accumulator,currentValue) => {
+            if(parseInt(currentValue.date.slice(5,7),10)===parseInt(month,10)){
+                return accumulator+currentValue.amount;
+            }
+        },0);
+    }else{
+        summaryExpenses = expenses.reduce(
+            (accumulator,currentValue) => accumulator+currentValue.amount,
+            0
+        );
+    }
     console.log(`# Total expenses: $${Math.round((summaryExpenses+Number.EPSILON)*100)/100}`);
 }
 
@@ -97,8 +107,9 @@ const main = () => {
 
     program.command('summary')
     .description('list the summary of the expenses')
-    .action(()=>{
-        summaryExpenses();
+    .option('--month <number>','filter expenses by month number')
+    .action((options)=>{
+        summaryExpenses(options.month);
     });
 
     program.command('delete')
