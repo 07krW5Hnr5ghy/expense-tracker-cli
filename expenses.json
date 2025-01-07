@@ -4,5 +4,23 @@
     "description": "food2",
     "amount": 9.12,
     "date": "2025-01-06"
+  },
+  {
+    "id": 3,
+    "description": "food4",
+    "amount": 2.33,
+    "date": "2025-02-06"
+  },
+  {
+    "id": 4,
+    "description": "food5",
+    "amount": 5.09,
+    "date": "2025-02-06"
+  },
+  {
+    "id": 5,
+    "description": "food6",
+    "amount": 13.41,
+    "date": "2025-03-06"
   }
 ]

@@ -66,6 +66,8 @@ const summaryExpenses = (month) => {
         summaryExpenses = expenses.reduce((accumulator,currentValue) => {
             if(parseInt(currentValue.date.slice(5,7),10)===parseInt(month,10)){
                 return accumulator+currentValue.amount;
+            }else{
+                return accumulator;
             }
         },0);
     }else{
