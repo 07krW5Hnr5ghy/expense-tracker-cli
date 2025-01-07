@@ -23,7 +23,7 @@ const formatStringNumber = (number) => {
 }
 
 // expenses functions
-const addExpense = (description,amount) => {
+const addExpense = (description,amount,category) => {
     if(typeof(Number(amount))!=="number"){
         console.log(`Expense amount must be a number`);
         return;
@@ -34,6 +34,7 @@ const addExpense = (description,amount) => {
     const newExpense = {
         id,
         description,
+        category,
         amount:Number(amount),
         date:`${currentDate.getFullYear()}-${formatStringNumber(currentDate.getMonth()+1)}-${formatStringNumber(currentDate.getDate())}`,
     }
@@ -53,13 +54,38 @@ const listExpenses = () => {
     
 }
 
-const summaryExpenses = (month) => {
+const summaryExpenses = (month,category) => {
     const expenses =  readExpenses();
     let summaryExpenses = null;
-    if(month!==undefined){
-        const currentDate = new Date();
+    const currentDate = new Date();
+    if(month!==undefined&&category!==undefined){
         summaryExpenses = expenses.reduce((accumulator,currentValue) => {
-            if(parseInt(currentValue.date.slice(5,7),10)===parseInt(month,10)&&parseInt(currentValue.date.slice(0,5),10)===currentDate.getFullYear()){
+            if(
+                parseInt(currentValue.date.slice(5,7),10)===parseInt(month,10) &&
+                parseInt(currentValue.date.slice(0,5),10)===currentDate.getFullYear() &&
+                currentValue.category === category
+            ){
+                return accumulator+currentValue.amount;
+            }else{
+                return accumulator;
+            }
+        },0);
+    }else if(month!==undefined){
+        summaryExpenses = expenses.reduce((accumulator,currentValue) => {
+            if(
+                parseInt(currentValue.date.slice(5,7),10)===parseInt(month,10) &&
+                parseInt(currentValue.date.slice(0,5),10)===currentDate.getFullYear()
+            ){
+                return accumulator+currentValue.amount;
+            }else{
+                return accumulator;
+            }
+        },0);
+    }else if(category!==undefined){
+        summaryExpenses = expenses.reduce((accumulator,currentValue) => {
+            if(
+                currentValue.category === category
+            ){
                 return accumulator+currentValue.amount;
             }else{
                 return accumulator;
@@ -92,8 +118,9 @@ const main = () => {
     .description('add new expense with description and ammount')
     .requiredOption('--description <string>', 'description of the new expense')
     .requiredOption('--amount <price>', 'amount of the new expense')
+    .requiredOption('--category <string>','category of the expense')
     .action((options) => {
-        addExpense(options.description,options.amount);
+        addExpense(options.description,options.amount,options.category);
     });
 
     program.command('list')
@@ -105,8 +132,9 @@ const main = () => {
     program.command('summary')
     .description('list the summary of the expenses')
     .option('--month <number>','filter expenses by month number of the current year')
+    .option('--category <string>')
     .action((options)=>{
-        summaryExpenses(options.month);
+        summaryExpenses(options.month,options.category);
     });
 
     program.command('delete')
