@@ -45,10 +45,10 @@ const addExpense = (description,amount,category) => {
 
 const listExpenses = () => {
     const expenses = readExpenses();
-    console.log('#-ID-Date-------Description-------Amount');
+    console.log('#-ID-Date-------Amount-------Description');
     expenses.forEach(expense => {
         console.log(
-            `# ${formatStringNumber(expense.id)} ${expense.date} "${expense.description}" ${expense.amount}`
+            `# ${formatStringNumber(expense.id)} ${expense.date} $${expense.amount} "${expense.description}"`
         );
     });
     
