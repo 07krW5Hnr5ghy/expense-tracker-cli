@@ -57,8 +57,9 @@ const summaryExpenses = (month) => {
     const expenses =  readExpenses();
     let summaryExpenses = null;
     if(month!==undefined){
+        const currentDate = new Date();
         summaryExpenses = expenses.reduce((accumulator,currentValue) => {
-            if(parseInt(currentValue.date.slice(5,7),10)===parseInt(month,10)){
+            if(parseInt(currentValue.date.slice(5,7),10)===parseInt(month,10)&&parseInt(currentValue.date.slice(0,5),10)===currentDate.getFullYear()){
                 return accumulator+currentValue.amount;
             }else{
                 return accumulator;
@@ -103,7 +104,7 @@ const main = () => {
 
     program.command('summary')
     .description('list the summary of the expenses')
-    .option('--month <number>','filter expenses by month number')
+    .option('--month <number>','filter expenses by month number of the current year')
     .action((options)=>{
         summaryExpenses(options.month);
     });
