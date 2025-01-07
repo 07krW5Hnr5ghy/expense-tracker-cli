@@ -55,6 +55,10 @@ const listExpenses = () => {
 }
 
 const summaryExpenses = (month,category) => {
+    if(typeof(Number(month))!=="number"){
+        console.log(`Expense month must be a number`);
+        return;
+    }
     const expenses =  readExpenses();
     let summaryExpenses = null;
     const currentDate = new Date();
